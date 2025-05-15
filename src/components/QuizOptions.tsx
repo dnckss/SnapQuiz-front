@@ -78,7 +78,7 @@ const QuizOptions: React.FC<QuizOptionsProps> = ({
           </div>
         </div>
         
-        <div className="md:pl-[4vw]">
+        <div className="md:pl-[2vw]">
           <p className="mb-2 text-[#2A2F45]">Questions <span className="text-[#8A94A6] text-sm">(limit 10)</span></p>
           <div className="flex items-center border rounded-lg bg-[#ffffff]">
             <button 
