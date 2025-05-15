@@ -65,7 +65,7 @@ const QuizOptions: React.FC<QuizOptionsProps> = ({
             {difficulties.map((difficulty) => (
               <button
                 key={difficulty}
-                className={`py-2 px-8 rounded-xl transition-colors ${
+                className={`py-2 px-6 rounded-xl transition-colors ${
                   selectedDifficulty === difficulty
                     ? 'bg-[#4A6FFF] text-white'
                     : 'bg-[#ffffff] border border-[#8A94A6] text-[#8A94A6] hover:bg-gray-200'
@@ -78,11 +78,11 @@ const QuizOptions: React.FC<QuizOptionsProps> = ({
           </div>
         </div>
         
-        <div className="md:pl-[5vw]">
+        <div className="md:pl-[4vw]">
           <p className="mb-2 text-[#2A2F45]">Questions <span className="text-[#8A94A6] text-sm">(limit 10)</span></p>
           <div className="flex items-center border rounded-lg bg-[#ffffff]">
             <button 
-              className={`px-8 py-2 transition-colors ${
+              className={`px-5 py-2 transition-colors ${
                 questionCount === 1 
                   ? 'text-gray-300 cursor-not-allowed' 
                   : 'text-[#4A6FFF] hover:text-[#3258d8]'
@@ -94,7 +94,7 @@ const QuizOptions: React.FC<QuizOptionsProps> = ({
             </button>
             <span className="px-4 py-2 text-center w-12">{questionCount}</span>
             <button 
-              className={`px-8 py-2 transition-colors ${
+              className={`px-5 py-2 transition-colors ${
                 questionCount === 10 
                   ? 'text-gray-300 cursor-not-allowed' 
                   : 'text-[#4A6FFF] hover:text-[#3258d8]'
