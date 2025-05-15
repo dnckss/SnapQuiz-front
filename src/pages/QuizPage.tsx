@@ -64,7 +64,7 @@ const QuizPage: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate quiz');
+        throw new Error('Failed to make a quiz');
       }
 
       const data = await response.json();
