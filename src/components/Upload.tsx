@@ -4,7 +4,7 @@ import Webcam from 'react-webcam';
 
 type UploadAreaProps = {
   activeTab: string;
-  onImageCapture: (imageData: string) => void;
+  onImageCapture: (imageData: File) => void;
 };
 
 const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
@@ -12,12 +12,18 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const webcamRef = React.useRef<Webcam>(null);
 
-  const capture = useCallback(() => {
+  const capture = useCallback(async () => {
     if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot();
+      const imageSrc = webcamRef.current.getScreenshot(); // base64 string
       if (imageSrc) {
         setCapturedImage(imageSrc);
-        onImageCapture(imageSrc);
+  
+        
+        const res = await fetch(imageSrc);
+        const blob = await res.blob();
+        const file = new File([blob], "captured.png", { type: blob.type });
+  
+        onImageCapture(file); 
         setShowCamera(false);
       }
     }
@@ -66,7 +72,7 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
                 className="bg-[#4A6FFF] text-white px-8 py-3 rounded-xl transition-colors hover:bg-[#3258d8]"
                 onClick={capture}
               >
-                Capture photo
+                Take photo
               </button>
               <button
                 className="bg-gray-200 text-gray-700 px-8 py-3 rounded-xl transition-colors hover:bg-gray-300"
