@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://usa-v1.onrender.com/questions/generate';
+const API_URL = 'https://usa-v1.onrender.com';
 
-//난이도 스네이크 케이스로 바꾸는거
 const formatQuestionType = (type: string) => {
   switch (type.toLowerCase()) {
     case 'short answer':
@@ -39,6 +38,15 @@ export const generateQuestions = async (
     formData.append('textbook_image', imageFile); 
   }
 
-  const response = await axios.post(API_URL, formData);
+  const response = await axios.post(`${API_URL}/questions/generate`, formData);
+  return response.data;
+};
+
+export const verifyAnswer = async (question: string, answer: string, type: string) => {
+  const response = await axios.post(`${API_URL}/questions/verify`, {
+    question,
+    answer,
+    question_type: formatQuestionType(type)
+  });
   return response.data;
 };

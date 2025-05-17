@@ -5,6 +5,8 @@ export type Question = {
   type: string;
   choices?: string[];
   correct_answer?: string;
+  status?: 'correct' | 'incorrect';
+  feedback?: string;
 };
 
 type QuizState = {
@@ -14,6 +16,7 @@ type QuizState = {
   setQuestions: (questions: Question[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  updateQuestionStatus: (index: number, status: 'correct' | 'incorrect', feedback?: string) => void;
 };
 
 export const useQuizStore = create<QuizState>((set) => ({
@@ -23,4 +26,10 @@ export const useQuizStore = create<QuizState>((set) => ({
   setQuestions: (questions) => set({ questions }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
+  updateQuestionStatus: (index, status, feedback) => 
+    set((state) => ({
+      questions: state.questions.map((q, i) => 
+        i === index ? { ...q, status, feedback } : q
+      )
+    }))
 }));
