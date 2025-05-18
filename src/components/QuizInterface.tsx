@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Question, useQuizStore } from '../store/quizStore';
 import { verifyAnswer } from '../api/quizApi';
 import { CheckCircle, XCircle } from 'lucide-react';
+import Tab from '../components/Tab';
 
 type QuizInterfaceProps = {
   questions: Question[];
@@ -9,6 +10,7 @@ type QuizInterfaceProps = {
 };
 
 const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
+  const [activeTab, setActiveTab] = useState<string>('import');
   const [answers, setAnswers] = useState<string[]>(new Array(questions.length).fill(''));
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { updateQuestionStatus } = useQuizStore();
@@ -66,19 +68,9 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
   return (
     <div>
       <div className="sticky top-0 bg-gray-50 z-10 pb-4">
-        <h1 className="text-3xl font-semibold text-[#1a1f36] mb-8">Make a Quiz</h1>
+        <h1 className="text-3xl font-semibold text-[#1a1f36] mb-6">Questions</h1>
         
-        <div className="mb-8 border-b border-[#e5e7eb]">
-          <div className="flex space-x-8">
-            <button className="pb-4 text-[#4A6FFF] font-medium relative">
-              Import PDF
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#4A6FFF]" />
-            </button>
-            <button className="pb-4 text-gray-500">
-              Enter Text
-            </button>
-          </div>
-        </div>
+        <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
       <div className="max-w-4xl mx-auto">
