@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
-import axios from 'axios';
 import Latex from 'react-latex-next';
 import 'katex/dist/katex.min.css';
 import LoadingDots from './LoadingDots';
@@ -15,27 +14,47 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [streamedContent, setStreamedContent] = useState('');
 
   const handleSubmit = async () => {
     if (!question.trim()) return;
 
-    setIsLoading(true);
     setMessages((prev) => [...prev, { role: 'user', content: question }]);
+    setIsLoading(true);
+    setStreamedContent('');
 
     try {
-      const response = await axios.post('https://usa-v1.onrender.com/questions/answers/generate', {
-        subject: subject.toLowerCase(),
-        question: question,
+      const response = await fetch('https://usa-v1.onrender.com/questions/answers/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subject: subject.toLowerCase(),
+          question,
+        }),
       });
 
-      setMessages((prev) => [...prev, { role: 'assistant', content: response.data.answer }]);
-      onChange(value + '\n' + response.data.answer);
+      const data = await response.json();
+
+      let parsedAnswer = data.answer;
+
+      
+      try {
+        const innerParsed = JSON.parse(parsedAnswer);
+        if (innerParsed.answer) {
+          parsedAnswer = innerParsed.answer;
+        }
+      } catch (e) {
+
+      }
+
+      setMessages((prev) => [...prev, { role: 'assistant', content: parsedAnswer }]);
+      onChange(value + '\n' + parsedAnswer);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error fetching answer:', error);
     } finally {
       setIsLoading(false);
       setQuestion('');
+      setStreamedContent('');
     }
   };
 
@@ -66,6 +85,7 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
             </div>
           </div>
         ))}
+
         {isLoading && (
           <div className="flex justify-start mb-4">
             <div className="inline-block p-4 rounded-xl bg-white border border-gray-200">
