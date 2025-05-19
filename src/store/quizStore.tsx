@@ -19,6 +19,11 @@ type QuizState = {
   updateQuestionStatus: (index: number, status: 'correct' | 'incorrect', feedback?: string) => void;
 };
 
+
+
+
+
+
 export const useQuizStore = create<QuizState>((set) => ({
   questions: [],
   loading: false,
@@ -33,3 +38,4 @@ export const useQuizStore = create<QuizState>((set) => ({
       )
     }))
 }));
+

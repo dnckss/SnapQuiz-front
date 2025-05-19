@@ -6,6 +6,7 @@ import QuizOptions from '../components/QuizOptions';
 import QuizInterface from '../components/QuizInterface';
 import { generateQuestions } from '../api/quizApi';
 import { useQuizStore } from '../store/quizStore';
+import TextInput from '../components/TextInput';
 
 type AnswerType = 'Random' | 'Multiple Choice' | 'Short Answer' | 'Descriptive';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
@@ -19,6 +20,7 @@ const QuizPage: React.FC = () => {
   const [activeSubject, setActiveSubject] = useState<Subject>('Math');
   const [imageData, setImageData] = useState<File | null>(null);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [inputText, setInputText] = useState('');
 
   const { questions, setQuestions, setLoading, setError } = useQuizStore();
 
@@ -43,6 +45,7 @@ const QuizPage: React.FC = () => {
 
   const handleSubjectChange = (subject: Subject) => {
     setActiveSubject(subject);
+    setActiveTab('import');
     setSelectedAnswerType(null);
     setSelectedDifficulty(null);
     setQuestionCount(1);
@@ -50,6 +53,7 @@ const QuizPage: React.FC = () => {
     setQuestions([]);
     setError(null);
     setShowQuiz(false);
+    setInputText('');
   };
 
   const handleImageCapture = (capturedImage: File) => {
@@ -65,7 +69,6 @@ const QuizPage: React.FC = () => {
 
   const handleSubmitAnswers = (answers: string[]) => {
     console.log('Submitted answers:', answers);
-    // Handle answer submission logic here
   };
 
   return (
@@ -89,15 +92,17 @@ const QuizPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 min-w-0 p-8">
+      <div className="flex-1 min-w-0">
         {!showQuiz ? (
           <>
-            <h1 className="text-3xl font-semibold text-gray-800 mb-6">{activeSubject} Quiz</h1>
-            <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
-            <Upload activeTab={activeTab} onImageCapture={handleImageCapture} />
+            <div className="p-8">
+              <h1 className="text-3xl font-semibold text-gray-800 mb-6">{activeSubject} Quiz</h1>
+              <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
+            </div>
             
-            {activeTab === 'import' && (
-              <>
+            {activeTab === 'import' ? (
+              <div className="px-8">
+                <Upload activeTab={activeTab} onImageCapture={handleImageCapture} />
                 <QuizOptions
                   selectedAnswerType={selectedAnswerType}
                   setSelectedAnswerType={setSelectedAnswerType}
@@ -124,11 +129,19 @@ const QuizPage: React.FC = () => {
                 >
                   {generateQuizMutation.isPending ? 'Making Quiz...' : 'Make a Quiz'}
                 </button>
-              </>
+              </div>
+            ) : (
+              <TextInput 
+                value={inputText}
+                onChange={setInputText}
+                subject={activeSubject}
+              />
             )}
           </>
         ) : (
-          <QuizInterface questions={questions} onSubmit={handleSubmitAnswers} />
+          <div className="p-8">
+            <QuizInterface questions={questions} onSubmit={handleSubmitAnswers} />
+          </div>
         )}
       </div>
     </div>

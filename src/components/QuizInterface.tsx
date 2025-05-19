@@ -3,6 +3,8 @@ import { Question, useQuizStore } from '../store/quizStore';
 import { verifyAnswer } from '../api/quizApi';
 import { CheckCircle, XCircle } from 'lucide-react';
 import Tab from '../components/Tab';
+import Latex from 'react-latex-next';
+import 'katex/dist/katex.min.css';
 
 type QuizInterfaceProps = {
   questions: Question[];
@@ -23,7 +25,7 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
-    
+
     for (let i = 0; i < questions.length; i++) {
       const question = questions[i];
       const answer = answers[i];
@@ -51,17 +53,17 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
 
   const getChoiceStyle = (question: Question, choice: string) => {
     if (!question.status) return 'border-[#e5e7eb] hover:bg-gray-50';
-    
+
     if (question.type === 'multiple_choice' && question.correct_answer === choice) {
       return 'border-green-500 bg-green-50';
     }
-    
+
     if (answers[questions.indexOf(question)] === choice) {
-      return question.status === 'correct' 
+      return question.status === 'correct'
         ? 'border-green-500 bg-green-50'
         : 'border-red-500 bg-red-50';
     }
-    
+
     return 'border-[#e5e7eb] opacity-50';
   };
 
@@ -69,7 +71,6 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
     <div>
       <div className="sticky top-0 bg-gray-50 z-10 pb-4">
         <h1 className="text-3xl font-semibold text-[#1a1f36] mb-6">Questions</h1>
-        
         <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
@@ -79,12 +80,12 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
             <h2 className="text-xl font-medium text-[#1a1f36] mb-3">
               Question {index + 1}.
             </h2>
-            
+
             <div className={`bg-white rounded-2xl p-6 shadow-sm border ${getQuestionStyle(question)} mb-4`}>
               <div className="space-y-3">
                 {question.question.split('\n').map((line, i) => (
                   <p key={i} className={`text-[#1a1f36] leading-relaxed ${line.startsWith('•') ? 'ml-4' : ''}`}>
-                    {line}
+                    <Latex>{line}</Latex>
                   </p>
                 ))}
               </div>
@@ -106,7 +107,9 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
                       className="h-4 w-4 text-[#4A6FFF] focus:ring-[#4A6FFF] border-gray-300"
                       disabled={question.status !== undefined}
                     />
-                    <span className="text-[#1a1f36]">{choice}</span>
+                    <span className="text-[#1a1f36]">
+                      <Latex>{choice}</Latex>
+                    </span>
                   </label>
                 ))}
               </div>

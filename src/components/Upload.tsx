@@ -90,6 +90,7 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
   //enter text 부분
   return (
    <>
+      <input type="text" placeholder='What would you like to know?' className='w-full border rounded-xl py-2 px-8 '   />
    </>
   );
 };
