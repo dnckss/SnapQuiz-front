@@ -7,6 +7,7 @@ import QuizInterface from '../components/QuizInterface';
 import { generateQuestions } from '../api/quizApi';
 import { useQuizStore } from '../store/quizStore';
 import TextInput from '../components/TextInput';
+import LoadingDots from '../components/LoadingDots';
 
 type AnswerType = 'Random' | 'Multiple Choice' | 'Short Answer' | 'Descriptive';
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
@@ -92,7 +93,16 @@ const QuizPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 relative">
+        {generateQuizMutation.isPending && (
+          <div className="absolute inset-0 bg-gray-50/50 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center">
+              <LoadingDots />
+              <p className="mt-4 text-gray-600 font-medium">Creating your quiz...</p>
+            </div>
+          </div>
+        )}
+
         {!showQuiz ? (
           <>
             <div className="p-8">
