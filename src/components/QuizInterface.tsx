@@ -67,6 +67,10 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
     return 'border-[#e5e7eb] opacity-50';
   };
 
+  
+  
+  
+
   return (
     <div>
       <div className="sticky top-0 bg-gray-50 z-10 pb-4">
@@ -140,8 +144,9 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
                   <p className="font-medium">
                     {question.status === 'correct' ? 'Correct!' : 'Incorrect'}
                   </p>
+                  
                   {question.feedback && (
-                    <p className="text-sm mt-1 text-gray-600">{question.feedback}</p>
+                    <p className="text-sm mt-1 text-gray-600"><Latex>{question.feedback}</Latex></p>
                   )}
                 </div>
               </div>
@@ -165,6 +170,8 @@ const QuizInterface: React.FC<QuizInterfaceProps> = ({ questions }) => {
       </div>
     </div>
   );
+
+  
 };
 
 export default QuizInterface;
