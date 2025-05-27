@@ -12,8 +12,6 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const webcamRef = React.useRef<Webcam>(null);
   const videoConstraints = {
-    width: 1280,
-    height: 720,
     facingMode: "environment"
   };
 
