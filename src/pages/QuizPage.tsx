@@ -75,7 +75,7 @@ const QuizPage: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-gray-50">
       <div className="w-48 min-w-48 bg-[#1e2334] p-6 h-screen sticky top-0">
-        <h2 className="text-[#4A6FFF] text-xl font-semibold mb-6">Subject</h2>
+        <h2 className="text-[#4A6FFF] text-xl font-semibold mb-6" onClick={() => location.reload()}>Subject</h2>
         <div className="space-y-2">
           {(['Math', 'English', 'History'] as Subject[]).map((subject) => (
             <div

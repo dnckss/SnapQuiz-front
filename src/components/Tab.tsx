@@ -23,6 +23,7 @@ const Tab: React.FC<TabProps> = ({ activeTab, setActiveTab }) => {
           )}
         </button>
       </div>
+      
       <div className="relative">
         <button
           className={`pb-2 px-4 ${
