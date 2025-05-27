@@ -11,10 +11,18 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const webcamRef = React.useRef<Webcam>(null);
+  const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: "environment"
+  };
+
 
   const capture = useCallback(async () => {
     if (webcamRef.current) {
+  
       const imageSrc = webcamRef.current.getScreenshot(); // base64 string
+
       if (imageSrc) {
         setCapturedImage(imageSrc);
   
@@ -66,6 +74,8 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
               ref={webcamRef}
               screenshotFormat="image/png"
               className="rounded-lg mb-4"
+              videoConstraints={videoConstraints}
+              
             />
             <div className="flex gap-4">
               <button
