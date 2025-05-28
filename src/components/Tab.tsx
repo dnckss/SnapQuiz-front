@@ -17,13 +17,13 @@ const Tab: React.FC<TabProps> = ({ activeTab, setActiveTab }) => {
           }`}
           onClick={() => setActiveTab('import')}
         >
-          Import PDF
+          Import IMG
           {activeTab === 'import' && (
             <div className="absolute bottom-0 left-4 right-4 h-0.5 bg-[#4369e0]" />
           )}
         </button>
       </div>
-      
+
       <div className="relative">
         <button
           className={`pb-2 px-4 ${

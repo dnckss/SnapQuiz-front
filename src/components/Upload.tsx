@@ -54,7 +54,7 @@ const Upload: React.FC<UploadAreaProps> = ({ activeTab, onImageCapture }) => {
             ) : (
               <>
                 <img src={pdf} className="w-10 h-10 mb-3" />
-                <p className="text-gray-700 mb-4">Upload Your PDF!</p>
+                <p className="text-gray-700 mb-4">Upload Your Image!</p>
                 <button 
                   className="bg-[#4A6FFF] text-white px-20 py-3 rounded-xl transition-colors hover:bg-[#3258d8] flex items-center gap-2"
                   onClick={() => setShowCamera(true)}
