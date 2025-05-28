@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowUp } from 'lucide-react';
-import Latex from 'react-latex-next';
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import LoadingDots from './LoadingDots';
 
@@ -18,8 +20,6 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
 
   const simulateTyping = (fullText: string) => {
     let index = 0;
-
-    // 처음에 assistant 메시지를 하나 추가해두기
     setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
     const interval = setInterval(() => {
@@ -29,7 +29,6 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
       setMessages((prev) => {
         const updated = [...prev];
         const lastIndex = updated.length - 1;
-
 
         if (updated[lastIndex]?.role === 'assistant') {
           updated[lastIndex] = {
@@ -70,14 +69,11 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
       let parsed = data.answer;
 
       try {
-
         const innerParsed = JSON.parse(parsed);
         if (innerParsed.answer) {
           parsed = innerParsed.answer;
         }
-      } catch (e) {
-
-      }
+      } catch (_) {}
 
       simulateTyping(parsed);
     } catch (error) {
@@ -104,13 +100,18 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
             className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}
           >
             <div
-              className={`inline-block p-4 rounded-xl max-w-[80%] whitespace-pre-wrap ${message.role === 'user'
+              className={`inline-block p-4 rounded-xl max-w-[80%] whitespace-pre-wrap ${
+                message.role === 'user'
                   ? 'bg-[#4A6FFF] text-white'
                   : 'bg-white border border-gray-200'
-                }`}
+              }`}
             >
               {message.role === 'assistant' ? (
-                <Latex>{message.content}</Latex>
+                <ReactMarkdown
+                  children={message.content}
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                />
               ) : (
                 message.content
               )}
@@ -118,7 +119,6 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
           </div>
         ))}
 
-        
         {isLoading && messages[messages.length - 1]?.role !== 'assistant' && (
           <div className="flex justify-start mb-4">
             <div className="inline-block p-4 rounded-xl bg-white border border-gray-200">
@@ -127,15 +127,17 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
           </div>
         )}
 
-        {/* Typing 중일 때는 일반 텍스트로 보여줌 */}
         {isLoading && typingAnswer && (
           <div className="mb-4 text-left">
             <div className="inline-block p-4 rounded-xl bg-white border border-gray-200 max-w-[80%] whitespace-pre-wrap">
-              {typingAnswer}
+              <ReactMarkdown
+                children={typingAnswer}
+                remarkPlugins={[remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+              />
             </div>
           </div>
         )}
-
       </div>
 
       <div className="sticky bottom-0 bg-gray-50 p-4">
@@ -151,10 +153,11 @@ const TextInput: React.FC<TextInputProps> = ({ value, onChange, subject }) => {
           <button
             onClick={handleSubmit}
             disabled={isLoading || !question.trim()}
-            className={`absolute right-4 bottom-4 p-2 rounded-lg transition-colors ${isLoading || !question.trim()
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-[#4A6FFF] text-white hover:bg-[#3258d8]'
-              }`}
+            className={`absolute right-4 bottom-4 p-2 rounded-lg transition-colors ${
+              isLoading || !question.trim()
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-[#4A6FFF] text-white hover:bg-[#3258d8]'
+            }`}
           >
             <ArrowUp size={20} />
           </button>

@@ -123,9 +123,14 @@ const QuizPage: React.FC = () => {
         )}
 
         <div className="p-8">
+          
+        {!showQuiz && (
           <h1 className="text-3xl font-semibold text-gray-800 mb-6">{activeSubject} Quiz</h1>
+        )}
+        
+        {!showQuiz && (
           <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
-
+        )}
           {!showQuiz ? (
             activeTab === 'import' ? (
               <div>
@@ -156,7 +161,9 @@ const QuizPage: React.FC = () => {
                   {generateQuizMutation.isPending ? 'Making Quiz...' : 'Make a Quiz'}
                 </button>
               </div>
-            ) : (
+            ) : 
+            
+            (
               <TextInput
                 value={inputText}
                 onChange={setInputText}
