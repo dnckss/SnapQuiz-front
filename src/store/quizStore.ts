@@ -31,7 +31,8 @@ export const useQuizStore = create<QuizState>((set) => ({
   subjects: [
     { name: 'Math', pdfUrl: '' },
     { name: 'English', pdfUrl: '' },
-    { name: 'History', pdfUrl: '' }
+    { name: 'History', pdfUrl: '' },
+    { name: 'Docker', pdfUrl: ''}
   ],
   loading: false,
   error: null,
